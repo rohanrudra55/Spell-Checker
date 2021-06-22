@@ -21,7 +21,7 @@ int main(){
 void input(){
     printf(">>>");
 	char* sentence=(char*)calloc(10,sizeof(char));
-	int position=0,start=-1;
+	int position=0,start=-1,special_check=0;
 	while(1){
 		if(position>10) //Reallocating if the size exceds
 			sentence=realloc(sentence,1*sizeof(char));
@@ -32,14 +32,16 @@ void input(){
 			continue;
 		if(sentence[position]==' '||sentence[position]=='.'){ // words extracting.
             // if(sentence[start+1]>64&&sentence[start+1]<91 || sentence[start+1]>96 && sentence[start+1]<123)
-            if(sentence[start+1]>96 && sentence[start+1]<123){
-			    search(&sentence[start+1],(position-start)); //Passing the word
-            }
+            if(sentence[position-1]>32 && sentence[position-1]<65)
+                special_check++;
+            if(sentence[start+1]>96 && sentence[start+1]<123)
+			    search(&sentence[start+1],(position-start-special_check)); //Passing the word
             start=position;
 		}
 		if(sentence[position]=='.')
 			break;
 		position++;
+        special_check=0;
 	}if(turn==0)
         printf("No error found\n");
 
